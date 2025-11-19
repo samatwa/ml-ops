@@ -1,0 +1,22 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Install extra system tools to make the image “fat”
+RUN apt-get update && apt-get install -y \
+    git \
+    vim \
+    wget \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy model file and inference script
+COPY model.pt .
+COPY inference.py .
+
+ENTRYPOINT ["python", "inference.py"]
