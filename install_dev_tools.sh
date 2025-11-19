@@ -10,7 +10,7 @@ REQUIREMENTS=("torch" "torchvision" "pillow" "Django")
 
 # --- Logging ---
 # Redirect all output to both terminal and log file
-exec &> >(tee -a "$LOG_FILE")
+exec > >(tee -a "$LOG_FILE") 2>&1
 
 log() {
   echo "[$(date +'%Y-%m-%d %H:%M:%S')] - $1"
@@ -190,21 +190,32 @@ done
 
 # --- Summary ---
 log "============== Summary =============="
+log "--- Versions of Installed Tools ---"
 
-docker --version || log "Docker not available"
-if command -v docker-compose &> /dev/null; then
-  docker-compose --version
-elif command -v docker &> /dev/null && docker compose version &> /dev/null; then
-  docker compose version | head -n 1
-else
-  log "Docker Compose not installed"
-fi
-
-"$PYTHON_CMD" --version
-"$PYTHON_CMD" -m pip --version
-
-for lib in "${REQUIREMENTS[@]}"; do
-  "$PYTHON_CMD" -m pip show "$lib" | head -n 2 || log "$lib not installed"
-done
+# Use a subshell to capture output without breaking the main pipe
+(
+  log "Docker:"
+  docker --version
+  log "Docker Compose:"
+  if command -v docker-compose &> /dev/null; then
+    docker-compose --version
+  elif command -v docker &> /dev/null && docker compose version &> /dev/null; then
+    docker compose version | head -n 1
+  else
+    log "  Not installed."
+  fi
+  log "Python:"
+  "$PYTHON_CMD" --version
+  log "Pip:"
+  "$PYTHON_CMD" -m pip --version
+  log "Python Libraries:"
+  for lib in "${REQUIREMENTS[@]}"; do
+    if "$PYTHON_CMD" -m pip show "$lib" &> /dev/null; then
+      "$PYTHON_CMD" -m pip show "$lib" | grep -E 'Name:|Version:'
+    else
+      log "  $lib: Not installed"
+    fi
+  done
+) || log "Summary generation failed. This can happen on some Windows terminals."
 
 log "--- Environment setup completed successfully! ---"
