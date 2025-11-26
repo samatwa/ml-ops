@@ -1,0 +1,53 @@
+# ============================
+# Terraform directories & files
+# ============================
+
+# Local Terraform modules and provider binaries (HUGE files)
+.terraform/
+**/.terraform/providers/
+
+# Terraform state files (should never be committed)
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Local override files (Terraform loads them automatically — keep them local only)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Variable files may contain secrets — do NOT commit
+*.tfvars
+*.tfvars.json
+terraform.tfvars
+terraform.tfvars.json
+
+# Terraform plan output
+plan.out
+planfile
+
+# ============================
+# IDE and Editor files
+# ============================
+
+# VS Code settings
+.vscode/
+
+# JetBrains IDEs (IntelliJ, PyCharm, WebStorm)
+.idea/
+
+# Swap files
+*.swp
+
+# ============================
+# Kubernetes local configs
+# ============================
+.kube/
+
+# ============================
+# Logs
+# ============================
+*.log

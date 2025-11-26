@@ -31,6 +31,11 @@ This project sets up an EKS cluster in a new VPC using Terraform modules.
     ```bash
     terraform plan
     ```
+    **VPC**:
+    ![alt text](<Screenshot 2025-11-26 195559.png>)
+
+    **EKS**:
+    ![alt text](<Screenshot 2025-11-26 195714.png>)
 
 3.  **Apply the changes:**
     ```bash
@@ -42,9 +47,11 @@ This project sets up an EKS cluster in a new VPC using Terraform modules.
     ```bash
     aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
     ```
-
+    ![alt text](image.png)
+    
 5.  **Verify nodes:**
     Check that your nodes are running:
     ```bash
     kubectl get nodes
     ```
+    ![alt text](image-1.png)
