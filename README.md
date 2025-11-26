@@ -32,11 +32,11 @@ This project sets up an EKS cluster in a new VPC using Terraform modules.
     terraform plan
     ```
     **VPC**:
-    ![alt text](screenshots/Screenshot%202025-11-26%20195559.png>)
+    ![alt text](screenshots/Screenshot%202025-11-26%20195559.png)
 
 
     **EKS**:
-    ![alt text](screenshots/Screenshot%202025-11-26%20195714.png>)
+    ![alt text](screenshots/Screenshot%202025-11-26%20195714.png)
 
 3.  **Apply the changes:**
     ```bash
