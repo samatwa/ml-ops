@@ -23,7 +23,7 @@ module "eks" {
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
 
-  # Дві node group-и: CPU та "GPU" (логічно, через теги/labels)
+  # Дві node group-и: CPU та "GPU" 
   eks_managed_node_groups = {
     cpu-nodes = {
       min_size     = 1
@@ -47,8 +47,6 @@ module "eks" {
       max_size     = 2
       desired_size = 0
 
-      # Формально "GPU-група", але щоб не вилізти з бюджету, теж t3.micro
-      # На практиці тут би були g4dn.* або p3.*, але це дорого.
       instance_types = ["t3.micro"]
       capacity_type  = "SPOT"
 
