@@ -35,6 +35,7 @@ kubectl get pods -n infra-tools
 # Port-forward для доступу до UI
 kubectl port-forward svc/argocd-server -n infra-tools 8080:443
 ![alt text](screenshots\image_02.png)
+
 # Отримання пароля для користувача admin
 kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ![alt text](screenshots\image_01.png)
@@ -43,6 +44,7 @@ kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.dat
 
 Після цього відкрийте `https://localhost:8080` у вашому браузері. Логін - `admin`.
 ![alt text](screenshots\image_03.png)
+![alt text](screenshots\image_06.png)
 
 ### 4. Перевірка розгортання додатку
 
@@ -59,16 +61,6 @@ kubectl get applications -n infra-tools
 kubectl get pods -n application
 ![alt text](screenshots\image_05.png)
 ```
-
-### 5. Доступ до NGINX
-
-Сервіс NGINX налаштований з типом `LoadBalancer`. Щоб отримати доступ, знайдіть його зовнішню IP-адресу:
-
-```bash
-kubectl get svc -n application
-```
-
-Знайдіть сервіс `nginx-application` та використовуйте його `EXTERNAL-IP` для доступу.
 
 ### Посилання
 
