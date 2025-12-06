@@ -35,13 +35,15 @@ kubectl get pods -n infra-tools
 # Port-forward для доступу до UI
 kubectl port-forward svc/argocd-server -n infra-tools 8080:443
 
+```
 ![alt text](screenshots/image_02.png)
 
+```bash
 # Отримання пароля для користувача admin
 kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-![alt text](screenshots/image_01.png)
 
 ```
+![alt text](screenshots/image_01.png)
 
 Після цього відкрийте `https://localhost:8080` у вашому браузері. Логін - `admin`.
 ![alt text](screenshots/image_06.png)
@@ -56,15 +58,17 @@ ArgoCD автоматично синхронізує додаток, описа�
 ```bash
 # Перевірка статусу ArgoCD Application
 kubectl get applications -n infra-tools
+
+```
 ![alt text](screenshots/image_04.png)
 
+```bash
 # Перевірка подів nginx у неймспейсі application
 kubectl get pods -n application
-![alt text](screenshots/image_07.png)
 
-
-![alt text](screenshots/image_08.png)
 ```
+![alt text](screenshots/image_07.png)
+![alt text](screenshots/image_08.png)
 
 ### Посилання
 
