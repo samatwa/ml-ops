@@ -6,7 +6,7 @@ resource "kubernetes_namespace" "argo" {
 
 resource "helm_release" "argo" {
   name       = "argocd"
-  namespace  = kubernetes_namespace.argo.metadata[0].name
+  namespace  = "infra-tools"
 
   repository = "https://argoproj.github.io/argo-helm"
   chart      = "argo-cd"

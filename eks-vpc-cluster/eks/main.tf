@@ -30,7 +30,7 @@ module "eks" {
       max_size     = 3
       desired_size = 2
 
-      instance_types = ["t3.micro"]  # Free Tier
+      instance_types = ["t3.small"]  # Free Tier
       capacity_type  = "ON_DEMAND"
 
       labels = {
@@ -47,7 +47,7 @@ module "eks" {
       max_size     = 2
       desired_size = 0
 
-      instance_types = ["t3.micro"]
+      instance_types = ["t3.small"]
       capacity_type  = "SPOT"
 
       labels = {
