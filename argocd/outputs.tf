@@ -10,7 +10,7 @@ output "argocd_server_access_instructions" {
   description = "Instructions to access the Argo CD server."
   value = <<-EOT
 To access the Argo CD UI, run the following command:
-kubectl port-forward svc/argocd-server -n ${kubernetes_namespace.argo.metadata[0].name} 8080:80
+kubectl port-forward svc/argocd-server -n ${kubernetes_namespace.argo.metadata[0].name} 8080:443
 
 Then, open a browser and go to: https://localhost:8080
 

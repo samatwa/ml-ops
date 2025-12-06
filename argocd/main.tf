@@ -70,4 +70,3 @@ resource "kubernetes_manifest" "namespaces_appset" {
  }
  depends_on = [helm_release.argo]
 }
-

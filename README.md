@@ -22,7 +22,9 @@ terraform apply
 
 ```bash
 # Перевірка подів ArgoCD
-kubectl get pods -n argocd
+kubectl get pods -n infra-tools
+![alt text](screenshots\Screenshot 2025-12-06 112236.png)
+
 ```
 
 ### 3. Доступ до ArgoCD UI
@@ -31,13 +33,16 @@ kubectl get pods -n argocd
 
 ```bash
 # Port-forward для доступу до UI
-kubectl port-forward svc/argocd-server -n argocd 8080:80
-
+kubectl port-forward svc/argocd-server -n infra-tools 8080:443
+![alt text](screenshots\image_02.png)
 # Отримання пароля для користувача admin
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+![alt text](screenshots\image_01.png)
+
 ```
 
 Після цього відкрийте `https://localhost:8080` у вашому браузері. Логін - `admin`.
+![alt text](screenshots\image_03.png)
 
 ### 4. Перевірка розгортання додатку
 
@@ -65,4 +70,4 @@ kubectl get svc -n application
 
 ### Посилання
 
-*   [Git-репозиторій з ArgoCD Application](https://github.com/samatwa/goit-argo)
+*   [Git-репозиторій з ArgoCD Application](https://githukubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -db.com/samatwa/goit-argo)
