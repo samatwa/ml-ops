@@ -34,8 +34,10 @@ kubectl get pods -n infra-tools
 ```bash
 # Port-forward для доступу до UI
 kubectl port-forward svc/argocd-server -n infra-tools 8080:443
+```
 ![alt text](screenshots\image_02.png)
 
+```bash
 # Отримання пароля для користувача admin
 kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ![alt text](screenshots\image_01.png)
