@@ -52,10 +52,12 @@ ArgoCD автоматично синхронізує додаток, описа�
 
 ```bash
 # Перевірка статусу ArgoCD Application
-kubectl get applications -n argocd
+kubectl get applications -n infra-tools
+![alt text](screenshots\image_04.png)
 
 # Перевірка подів nginx у неймспейсі application
 kubectl get pods -n application
+![alt text](screenshots\image_05.png)
 ```
 
 ### 5. Доступ до NGINX
