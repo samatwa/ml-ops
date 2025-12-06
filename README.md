@@ -44,8 +44,9 @@ kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.dat
 ```
 
 Після цього відкрийте `https://localhost:8080` у вашому браузері. Логін - `admin`.
-![alt text](screenshots\image_06.png)
-![alt text](screenshots\Screenshot 2025-12-06 133302.png)
+![Скріншот ArgoCD UI](screenshots\image_06.png)
+
+![Скріншот ArgoCD UI](screenshots\Screenshot 2025-12-06 133302.png)
 
 ### 4. Перевірка розгортання додатку
 
