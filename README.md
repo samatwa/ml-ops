@@ -23,7 +23,7 @@ terraform apply
 ```bash
 # Перевірка подів ArgoCD
 kubectl get pods -n infra-tools
-![alt text](screenshots/Screenshot 2025-12-06 112236.png)
+![alt text](screenshots/Screenshot%202025-12-06%20112236.png)
 
 ```
 
@@ -45,7 +45,7 @@ kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.dat
 
 Після цього відкрийте `https://localhost:8080` у вашому браузері. Логін - `admin`.
 ![alt text](screenshots/image_06.png)
-![alt text](screenshots/Screenshot 2025-12-06 133302.png)
+![alt text](screenshots/Screenshot%202025-12-06%20133302.png)
 
 ### 4. Перевірка розгортання додатку
 
