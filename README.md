@@ -71,5 +71,4 @@ kubectl get pods -n application
 ![alt text](screenshots/image_08.png)
 
 ### Посилання
-
-*   [Git-репозиторій з ArgoCD Application](https://githukubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -db.com/samatwa/goit-argo)
+[Git-репозиторій з ArgoCD Application](https://github.com/samatwa/goit-argo)
