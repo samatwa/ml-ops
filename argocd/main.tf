@@ -4,7 +4,6 @@ resource "kubernetes_namespace" "argo" {
   }
 }
 
-# Встановлення Argo CD через офіційний Helm-чарт
 resource "helm_release" "argo" {
   name       = "argocd"
   namespace  = kubernetes_namespace.argo.metadata[0].name
@@ -15,13 +14,6 @@ resource "helm_release" "argo" {
 
   recreate_pods = true
   replace       = true
-
-  wait    = true
-  timeout = 600
-
+  
   values = [file("${path.module}/values/argocd-values.yaml")]
-
-  depends_on = [
-    data.aws_eks_cluster.cluster
-  ]
 }
