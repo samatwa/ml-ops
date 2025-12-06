@@ -39,3 +39,15 @@ variable "argocd_chart_version" {
  type    = string
  default   = "7.7.5"
 }
+
+variable "app_repo_url" {
+  description = "Публічний Git-репозиторій з маніфестами"
+  type        = string
+  default     = "https://github.com/samatwa/goit-argo.git"
+}
+
+variable "app_repo_branch" {
+  description = "Гілка"
+  type        = string
+  default     = "main"
+}

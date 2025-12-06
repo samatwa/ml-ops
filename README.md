@@ -1,58 +1,68 @@
-# ml-ops
+# goit-argo
 
-# EKS & VPC Terraform Project
+Цей репозиторій містить конфігураційні файли Kubernetes для розгортання додатків за допомогою ArgoCD.
 
-This project sets up an EKS cluster in a new VPC using Terraform modules.
+## Початок роботи
 
-## Structure
+### 1. Розгортання інфраструктури
 
-- `main.tf`: Root module that calls the `vpc` and `eks` modules.
-- `variables.tf`: Root variables.
-- `outputs.tf`: Root outputs.
-- `terraform.tf`: Provider configuration.
-- `backend.tf`: S3 backend configuration.
-- `vpc/`: VPC module.
-  - `main.tf`: Uses `terraform-aws-modules/vpc/aws`.
-  - `variables.tf`: VPC input variables.
-  - `outputs.tf`: VPC outputs.
-- `eks/`: EKS module.
-  - `main.tf`: Uses `terraform-aws-modules/eks/aws`.
-  - `variables.tf`: EKS input variables.
-  - `outputs.tf`: EKS outputs.
+Для розгортання EKS кластера та встановлення ArgoCD виконайте наступні кроки у репозиторії `ml-ops`:
 
-## How to Run
+```bash
+# Ініціалізація Terraform
+terraform init
 
-1.  **Initialize Terraform:**
-    ```bash
-    terraform init
-    ```
+# Застосування конфігурації
+terraform apply
+```
 
-2.  **Plan the changes:**
-    ```bash
-    terraform plan
-    ```
-    **VPC**:
-    ![alt text](screenshots/Screenshot%202025-11-26%20195559.png)
+### 2. Перевірка роботи ArgoCD
 
+Після успішного виконання `terraform apply`, переконайтесь, що ArgoCD працює:
 
-    **EKS**:
-    ![alt text](screenshots/Screenshot%202025-11-26%20195714.png)
+```bash
+# Перевірка подів ArgoCD
+kubectl get pods -n argocd
+```
 
-3.  **Apply the changes:**
-    ```bash
-    terraform apply
-    ```
+### 3. Доступ до ArgoCD UI
 
-4.  **Configure kubectl:**
-    After `apply` is complete, configure `kubectl` to connect to your new cluster:
-    ```bash
-    aws eks --region <your-region> update-kubeconfig --name <your-cluster-name>
-    ```
-    ![alt text](screenshots/image.png)
+Щоб отримати доступ до веб-інтерфейсу ArgoCD, виконайте port-forward та отримайте пароль:
 
-5.  **Verify nodes:**
-    Check that your nodes are running:
-    ```bash
-    kubectl get nodes
-    ```
-    ![alt text](screenshots/image-1.png)
+```bash
+# Port-forward для доступу до UI
+kubectl port-forward svc/argocd-server -n argocd 8080:80
+
+# Отримання пароля для користувача admin
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+Після цього відкрийте `https://localhost:8080` у вашому браузері. Логін - `admin`.
+
+### 4. Перевірка розгортання додатку
+
+ArgoCD автоматично синхронізує додаток, описаний у `application.yaml` з цього репозиторію.
+
+Перевірте статус додатку в UI ArgoCD або через `kubectl`:
+
+```bash
+# Перевірка статусу ArgoCD Application
+kubectl get applications -n argocd
+
+# Перевірка подів nginx у неймспейсі application
+kubectl get pods -n application
+```
+
+### 5. Доступ до NGINX
+
+Сервіс NGINX налаштований з типом `LoadBalancer`. Щоб отримати доступ, знайдіть його зовнішню IP-адресу:
+
+```bash
+kubectl get svc -n application
+```
+
+Знайдіть сервіс `nginx-application` та використовуйте його `EXTERNAL-IP` для доступу.
+
+### Посилання
+
+*   [Git-репозиторій з ArgoCD Application](https://github.com/samatwa/goit-argo)

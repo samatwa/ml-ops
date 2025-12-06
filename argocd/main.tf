@@ -18,11 +18,12 @@ resource "helm_release" "argo" {
   values = [file("${path.module}/values/argocd-values.yaml")]
 }
 
-data "kubernetes_custom_resource_definition" "appset_crd" {
-  metadata {
-    name = "applicationsets.argoproj.io"
-  }
+resource "null_resource" "wait_for_appset_crd" {
   depends_on = [helm_release.argo]
+
+  provisioner "local-exec" {
+    command = "kubectl wait --for condition=established --timeout=120s crd/applicationsets.argoproj.io"
+  }
 }
 
 resource "kubernetes_manifest" "namespaces_appset" {
@@ -75,7 +76,7 @@ resource "kubernetes_manifest" "namespaces_appset" {
     }
   }
   
-  depends_on = [data.kubernetes_custom_resource_definition.appset_crd]
+  depends_on = [null_resource.wait_for_appset_crd]
 }
 
 
