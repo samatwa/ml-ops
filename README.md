@@ -23,9 +23,9 @@ terraform apply
 ```bash
 # Перевірка подів ArgoCD
 kubectl get pods -n infra-tools
-![alt text](screenshots/Screenshot%202025-12-06%20112236.png)
 
 ```
+![alt text](screenshots/Screenshot%202025-12-06%20112236.png)
 
 ### 3. Доступ до ArgoCD UI
 
