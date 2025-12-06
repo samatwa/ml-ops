@@ -6,11 +6,14 @@
 
 ### 1. Розгортання інфраструктури
 
-Для розгортання EKS кластера та встановлення ArgoCD виконайте наступні кроки у репозиторії `ml-ops`:
+Для розгортання EKS кластера та встановлення ArgoCD виконайте наступні кроки у репозиторії `ml-ops/argocd`:
 
 ```bash
 # Ініціалізація Terraform
 terraform init
+
+# Перегляд плану змін інфраструктури
+terraform plan
 
 # Застосування конфігурації
 terraform apply
@@ -46,8 +49,8 @@ kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.dat
 ![alt text](screenshots/image_01.png)
 
 Після цього відкрийте `https://localhost:8080` у вашому браузері. Логін - `admin`.
-![alt text](screenshots/image_06.png)
-![alt text](screenshots/Screenshot%202025-12-06%20133302.png)
+
+![alt text](screenshots/Screenshot%202025-12-06%20133318.png)
 
 ### 4. Перевірка розгортання додатку
 
@@ -67,8 +70,13 @@ kubectl get applications -n infra-tools
 kubectl get pods -n application
 
 ```
+До застосування змін у `application.yaml`
 ![alt text](screenshots/image_07.png)
+![alt text](screenshots/image_06.png)
+
+Після застосування змін у `application.yaml`
 ![alt text](screenshots/image_08.png)
+![alt text](screenshots/Screenshot%202025-12-06%20133302.png)
 
 ### Посилання
 [Git-репозиторій з ArgoCD Application](https://github.com/samatwa/goit-argo)
