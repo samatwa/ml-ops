@@ -1,70 +1,55 @@
-# goit-argo
+# MLOps Experiments
 
-Цей репозиторій містить конфігураційні файли Kubernetes для розгортання додатків за допомогою ArgoCD.
+This repository contains scripts and configurations for MLOps experiments, including model training, metric logging with MLflow, and monitoring with Prometheus and Grafana.
 
-## Початок роботи
+## How to Run `train_and_push.py`
 
-### 1. Розгортання інфраструктури
+1.  **Install dependencies:**
+    ```bash
+    pip install -r experiments/requirements.txt
+    ```
 
-Для розгортання EKS кластера та встановлення ArgoCD виконайте наступні кроки у репозиторії `ml-ops`:
+2.  **Set up port forwarding for MLflow and PushGateway:**
 
-```bash
-# Ініціалізація Terraform
-terraform init
+    *   **MLflow:**
+        ```bash
+        kubectl port-forward svc/mlflow -n infra-tools 5000:5000
+        ```
+    *   **PushGateway:**
+        ```bash
+        kubectl port-forward svc/pushgateway -n monitoring 9091:9091
+        ```
 
-# Застосування конфігурації
-terraform apply
-```
+3.  **Run the script:**
+    ```bash
+    python experiments/train_and_push.py
+    ```
 
-### 2. Перевірка роботи ArgoCD
+## How to Check MLflow and PushGateway in the Cluster
 
-Після успішного виконання `terraform apply`, переконайтесь, що ArgoCD працює:
+*   **MLflow:**
+    ```bash
+    kubectl get pods -n infra-tools | grep mlflow
+    ```
+*   **PushGateway:**
+    ```bash
+    kubectl get pods -n monitoring | grep pushgateway
+    ```
 
-```bash
-# Перевірка подів ArgoCD
-kubectl get pods -n infra-tools
-![alt text](screenshots\Screenshot 2025-12-06 112236.png)
+## How to View Metrics in Grafana
 
-```
+1.  **Port-forward Grafana:**
+    ```bash
+    kubectl port-forward svc/grafana -n monitoring 3000:3000
+    ```
+2.  Open Grafana in your browser at `http://localhost:3000`.
+3.  Go to **Explore** and select the **Prometheus** data source.
+4.  Query for `mlflow_accuracy` or `mlflow_loss` to see the metrics.
 
-### 3. Доступ до ArgoCD UI
+## Screenshots
 
-Щоб отримати доступ до веб-інтерфейсу ArgoCD, виконайте port-forward та отримайте пароль:
+*   **MLflow UI:**
+    ![MLflow UI](screenshots/mlflow-ui.png)
 
-```bash
-# Port-forward для доступу до UI
-kubectl port-forward svc/argocd-server -n infra-tools 8080:443
-![alt text](screenshots\image_02.png)
-
-# Отримання пароля для користувача admin
-kubectl -n infra-tools get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-![alt text](screenshots\image_01.png)
-
-```
-
-Після цього відкрийте `https://localhost:8080` у вашому браузері. Логін - `admin`.
-![alt text](screenshots\image_06.png)
-![alt text](screenshots\Screenshot 2025-12-06 133302.png)
-
-### 4. Перевірка розгортання додатку
-
-ArgoCD автоматично синхронізує додаток, описаний у `application.yaml` з цього репозиторію.
-
-Перевірте статус додатку в UI ArgoCD або через `kubectl`:
-
-```bash
-# Перевірка статусу ArgoCD Application
-kubectl get applications -n infra-tools
-![alt text](screenshots\image_04.png)
-
-# Перевірка подів nginx у неймспейсі application
-kubectl get pods -n application
-![alt text](screenshots\image_07.png)
-
-
-![alt text](screenshots\image_08.png)
-```
-
-### Посилання
-
-*   [Git-репозиторій з ArgoCD Application](https://githukubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -db.com/samatwa/goit-argo)
+*   **Grafana Explore:**
+    ![Grafana Explore](screenshots/grafana-explore.png)

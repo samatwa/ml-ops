@@ -1,0 +1,6 @@
+mlflow
+scikit-learn
+prometheus_client
+numpy
+pandas
+python-dotenv

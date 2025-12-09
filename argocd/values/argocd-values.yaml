@@ -20,3 +20,6 @@ redis:
 
 applicationSet:
   enabled: true
+
+crds:
+  enabled: true
