@@ -1,55 +1,92 @@
 # MLOps Experiments
 
-This repository contains scripts and configurations for MLOps experiments, including model training, metric logging with MLflow, and monitoring with Prometheus and Grafana.
+Цей репозиторій містить конфігурації та скрипти для виконання MLOps-експериментів, включно з:
+- Тренуванням моделей;
+- Логуванням параметрів, метрик та артефактів у **MLflow**;
+- Пушингом метрик у **Prometheus PushGateway**;
+- Переглядом метрик у **Grafana**.
 
-## How to Run `train_and_push.py`
+---
 
-1.  **Install dependencies:**
-    ```bash
-    pip install -r experiments/requirements.txt
+## Як запустити `train_and_push.py`
+
+### 1. Встановити залежності
+```bash
+pip install -r experiments/requirements.txt
+```
+
+### 2. Налаштувати port-forward
+> **Примітка:** MLflow і MinIO працюють у namespace `application`, а PushGateway — у `monitoring`.
+
+#### MLflow Tracking Server
+```bash
+kubectl port-forward svc/mlflow -n application 5000:5000
+```
+
+#### PushGateway
+```bash
+kubectl port-forward svc/pushgateway -n monitoring 9091:9091
+```
+
+### 3. Запустити скрипт тренування
+```bash
+python experiments/train_and_push.py
+```
+
+**Після виконання:**
+- Кожен експеримент з'явиться у MLflow UI.
+- Метрики `mlflow_accuracy` та `mlflow_loss` будуть доступні в Prometheus.
+- Найкраща модель буде збережена у директорії `best_model/`.
+
+---
+
+## Як перевірити, що сервіси працюють
+
+### MLflow (namespace: `application`)
+```bash
+kubectl get pods -n application | grep mlflow
+kubectl get svc -n application | grep mlflow
+```
+
+### MinIO (namespace: `application`)
+```bash
+kubectl get pods -n application | grep minio
+kubectl get svc -n application | grep minio
+```
+
+### PostgreSQL (backend MLflow, namespace: `application`)
+```bash
+kubectl get pods -n application | grep postgres
+```
+
+### PushGateway (namespace: `monitoring`)
+```bash
+kubectl get pods -n monitoring | grep pushgateway
+kubectl get svc -n monitoring | grep pushgateway
+```
+
+---
+
+## Як переглянути метрики в Grafana
+
+### 1. Зробити port-forward для Grafana
+```bash
+kubectl port-forward svc/grafana -n monitoring 3000:3000
+```
+
+### 2. Відкрити Grafana
+Відкрийте у браузері: [http://localhost:3000](http://localhost:3000)
+
+### 3. Перегляд метрик
+1.  Перейдіть у розділ **Explore**.
+2.  Оберіть data source **Prometheus**.
+3.  Виконайте запити:
+
+    Для **accuracy**:
     ```
-
-2.  **Set up port forwarding for MLflow and PushGateway:**
-
-    *   **MLflow:**
-        ```bash
-        kubectl port-forward svc/mlflow -n infra-tools 5000:5000
-        ```
-    *   **PushGateway:**
-        ```bash
-        kubectl port-forward svc/pushgateway -n monitoring 9091:9091
-        ```
-
-3.  **Run the script:**
-    ```bash
-    python experiments/train_and_push.py
+    mlflow_accuracy
     ```
-
-## How to Check MLflow and PushGateway in the Cluster
-
-*   **MLflow:**
-    ```bash
-    kubectl get pods -n infra-tools | grep mlflow
+    Для **loss**:
     ```
-*   **PushGateway:**
-    ```bash
-    kubectl get pods -n monitoring | grep pushgateway
+    mlflow_loss
     ```
-
-## How to View Metrics in Grafana
-
-1.  **Port-forward Grafana:**
-    ```bash
-    kubectl port-forward svc/grafana -n monitoring 3000:3000
-    ```
-2.  Open Grafana in your browser at `http://localhost:3000`.
-3.  Go to **Explore** and select the **Prometheus** data source.
-4.  Query for `mlflow_accuracy` or `mlflow_loss` to see the metrics.
-
-## Screenshots
-
-*   **MLflow UI:**
-    ![MLflow UI](screenshots/mlflow-ui.png)
-
-*   **Grafana Explore:**
-    ![Grafana Explore](screenshots/grafana-explore.png)
