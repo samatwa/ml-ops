@@ -25,6 +25,9 @@ spec:
           enabled: false
         service:
           type: ClusterIP
+        resources:
+          requests:
+            memory: 512Mi
   syncPolicy:
     automated:
       prune: true
