@@ -2,36 +2,71 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: minio
-  namespace: infra-tools
+  namespace: argocd
+  labels:
+    app: minio
+    component: storage
 spec:
   project: default
-  destination:
-    namespace: application
-    server: https://kubernetes.default.svc
   source:
-    repoURL: https://charts.min.io/
+    repoURL: https://charts.bitnami.com/bitnami
     chart: minio
-    targetRevision: 5.4.0        
+    targetRevision: 17.0.21
     helm:
       values: |
-        mode: standalone        
-        rootUser: minio
-        rootPassword: minio123
-        buckets:
-          - name: mlflow-artifacts
-            policy: none
-            purge: false
+        # Authentication
+        auth:
+          existingSecret: minio-secret
+
+        replicaCount: 1
+        
         persistence:
-          enabled: false
+          enabled: true
+          size: 5Gi
+          accessModes:
+            - ReadWriteOnce
+          storageClass: ""
+
         service:
           type: ClusterIP
+          ports:
+            api: 9000
+            console: 9001
+
+        defaultBuckets: "mlflow,mlflow-artifacts"
+
         resources:
-          requests:
+          limits:
+            cpu: 250m
             memory: 256Mi
+          requests:
             cpu: 100m
+            memory: 128Mi
+
+        metrics:
+          serviceMonitor:
+            enabled: false
+
+        livenessProbe:
+          enabled: true
+          initialDelaySeconds: 5
+          periodSeconds: 30
+
+        readinessProbe:
+          enabled: true
+          initialDelaySeconds: 5
+          periodSeconds: 15
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: mlflow
+  
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true
+
+  revisionHistoryLimit: 3
