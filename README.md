@@ -16,7 +16,6 @@ pip install -r experiments/requirements.txt
 ```
 
 ### 2. Налаштувати port-forward
-> **Примітка:** MLflow і MinIO працюють у namespace `application`, а PushGateway — у `monitoring`.
 
 #### MLflow Tracking Server
 ```bash
