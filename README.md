@@ -89,3 +89,5 @@ kubectl port-forward svc/grafana -n monitoring 3000:3000
     ```
     mlflow_loss
     ```
+
+[Git-репозиторій з ArgoCD Application](https://github.com/samatwa/goit-argo)
