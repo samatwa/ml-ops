@@ -26,9 +26,9 @@ module "eks" {
   # Дві node group-и: CPU та "GPU" 
   eks_managed_node_groups = {
     cpu-nodes = {
-      min_size     = 1
-      max_size     = 3
-      desired_size = 2
+      min_size     = 2
+      max_size     = 4
+      desired_size = 3
 
       instance_types = ["t3.small"]  # Free Tier
       capacity_type  = "ON_DEMAND"
