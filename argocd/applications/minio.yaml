@@ -15,7 +15,7 @@ spec:
     helm:
       valuesObject:
         image:
-          tag: 2024.3.15-debian-12-r3   # <<< ВАЖНО! Существующий тег
+          tag: 2024.3.18-debian-12-r0
         auth:
           rootUser: minio
           rootPassword: minio123
