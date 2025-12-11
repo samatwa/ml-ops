@@ -4,32 +4,30 @@ metadata:
   name: minio
   namespace: infra-tools
 spec:
+  project: default
   destination:
     namespace: application
     server: https://kubernetes.default.svc
-  project: default
   source:
-    repoURL: https://charts.bitnami.com/bitnami
+    repoURL: https://charts.min.io/
     chart: minio
-    targetRevision: 13.7.2
+    targetRevision: 5.4.0        # <- версия чарта из Chart.yaml
     helm:
-      valuesObject:
-        image:
-          repository: docker.io/bitnami/minio
-          tag: 2024.3.22-debian-12-r0
-        auth:
-          rootUser: minio
-          rootPassword: minio123
-        defaultBuckets: "mlflow-artifacts"
-        service:
-          type: ClusterIP
+      values: |
+        mode: standalone        # для учебки достаточно
+        rootUser: minio
+        rootPassword: minio123
+        buckets:
+          - name: mlflow-artifacts
+            policy: none
+            purge: false
         persistence:
           enabled: false
+        service:
+          type: ClusterIP
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true
-      - SkipDryRunOnMissingResource=true
